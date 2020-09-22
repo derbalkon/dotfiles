@@ -1,0 +1,15 @@
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[user]
+	name = derbalkon
+	email = to.wrrrr@gmail.com
+	signingkey = 3078FC48CAFF1832
+[commit]
+	gpgsign = true
+[http]
+	proxy = socks5://127.0.0.1:7890
+[https]
+	proxy = socks5://127.0.0.1:7890
