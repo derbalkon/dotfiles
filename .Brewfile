@@ -51,5 +51,3 @@ mas "CleanMyDrive 2", id: 523620159
 # These two should be downloaded from US Mac App Store
 # mas "Unclutter", id: 577085396
 # mas "PopClip", id: 445189367
-
-end
