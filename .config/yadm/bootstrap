@@ -1,70 +1,85 @@
-#!/usr/bin/env zsh
+#!/bin/sh
+set -e
+cd $HOME
 
-# Refer to ~/.macos — https://mths.be/macos
+brew_bundle(){
+  if [ -f "$HOME/.Brewfile" ]; then
+    echo ">>> Installing brew packages..."
+    brew bundle --global
+  fi
+}
 
-# Close any open System Preferences panes, to prevent them from overriding
-osascript -e 'tell application "System Preferences" to quit'
+macos_customize(){
+  # Refer to ~/.macos — https://mths.be/macos
+  echo ">>> Fitting some customized changes..."
 
-# Ask for the administrator password upfront
-sudo -v
-# Keep-alive: update existing `sudo` time stamp until job finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+  # Close any open System Preferences panes, to prevent them from overriding
+  osascript -e 'tell application "System Preferences" to quit'
 
-# General
-# Always show scrollbars
-# Possible values: `WhenScrolling`, `Automatic` and `Always`
-defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
-# Disable smart dashes as they’re annoying when typing code
-defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
-# Disable automatic capitalization
-defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
-# Disable automatic period substitution
-defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+  # Ask for the administrator password upfront
+  sudo -v
+  # Keep-alive: update existing `sudo` time stamp until job finished
+  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-# Energy saving
-sudo pmset -a hibernatemode 0
-sudo pmset -a displaysleep 45
-sudo pmset -a sleep 45
-sudo pmset -a proximitywake 0
+  # General
+  # Always show scrollbars
+  # Possible values: `WhenScrolling`, `Automatic` and `Always`
+  defaults write NSGlobalDomain AppleShowScrollBars -string "WhenScrolling"
+  # Disable smart dashes as they’re annoying when typing code
+  defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+  # Disable automatic capitalization
+  defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+  # Disable automatic period substitution
+  defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 
-# Dock
-# Enable highlight hover effect for the grid view of a stack
-defaults write com.apple.dock mouse-over-hilite-stack -bool true
-# Put dock on the left
-defaults write com.apple.dock orientation -string left
-# Enable the magic zoom animation
-defaults write com.apple.dock magnification -bool true
-# Set the icon size of Dock items
-defaults write com.apple.dock tilesize -int 64
-defaults write com.apple.dock largesize -int 73
-# Minimize windows into application’s icon
-defaults write com.apple.dock minimize-to-application -bool true
+  # Energy saving
+  sudo pmset -a hibernatemode 0
+  sudo pmset -a displaysleep 45
+  sudo pmset -a sleep 45
+  sudo pmset -a proximitywake 0
 
-# Finder
-# allow quitting via ⌘ + Q; doing so will also hide desktop icons
-defaults write com.apple.finder QuitMenuItem -bool true
-# set Downloads as the default location for new Finder windows
-defaults write com.apple.finder NewWindowTarget -string "PfLo"
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads/"
-# Keep folders on top when sorting by name
-defaults write com.apple.finder _FXSortFoldersFirst -bool true
-# Avoid creating .DS_Store files on network or USB volumes
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-# Disable disk image verification
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
-# Use list view in all Finder windows by default
-# View by Icon(icnv), List(Nlsv), Column(clmv), CoverFlow(Flwv)
-defaults write com.apple.finder FXPreferredViewStyle -string "clsv"
-# Disable the warning before emptying the Trash
-defaults write com.apple.finder WarnOnEmptyTrash -bool false
-# Show item info to the right of the icons on the desktop
-/usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" ~/Library/Preferences/com.apple.finder.plist
+  # Dock
+  # Enable highlight hover effect for the grid view of a stack
+  defaults write com.apple.dock mouse-over-hilite-stack -bool true
+  # Put dock on the left
+  defaults write com.apple.dock orientation -string left
+  # Enable the magic zoom animation
+  defaults write com.apple.dock magnification -bool true
+  # Set the icon size of Dock items
+  defaults write com.apple.dock tilesize -int 64
+  defaults write com.apple.dock largesize -int 73
+  # Minimize windows into application’s icon
+  defaults write com.apple.dock minimize-to-application -bool true
 
+  # Finder
+  # allow quitting via ⌘ + Q; doing so will also hide desktop icons
+  defaults write com.apple.finder QuitMenuItem -bool true
+  # set Downloads as the default location for new Finder windows
+  defaults write com.apple.finder NewWindowTarget -string "PfLo"
+  defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads/"
+  # Keep folders on top when sorting by name
+  defaults write com.apple.finder _FXSortFoldersFirst -bool true
+  # Avoid creating .DS_Store files on network or USB volumes
+  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+  defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+  # Disable disk image verification
+  defaults write com.apple.frameworks.diskimages skip-verify -bool true
+  defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
+  defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+  # Use list view in all Finder windows by default
+  # View by Icon(icnv), List(Nlsv), Column(clmv), CoverFlow(Flwv)
+  defaults write com.apple.finder FXPreferredViewStyle -string "clsv"
+  # Disable the warning before emptying the Trash
+  defaults write com.apple.finder WarnOnEmptyTrash -bool false
+  # Show item info to the right of the icons on the desktop
+  /usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" ~/Library/Preferences/com.apple.finder.plist
 
-killall Dock
-killall Finder
+  echo ">>> Reloading..."
+  killall Dock
+  killall Finder
+}
+
+brew_bundle
+macos_customize
 
 echo "Done."

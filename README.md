@@ -14,16 +14,16 @@ Proxy, proxy, proxy. Stay cool and stay [clashy](https://install.appcenter.ms/us
 ### One-liner
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/derbalkon/dotfiles/master/.config/yadm/presetup.sh | sh -
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/derbalkon/dotfiles/master/.config/yadm/setup.sh)"
 ```
 
 This will
 
 - install Xcode Command Line Tools
-- pouring Homebrew
-- install environment packages including yadm
-- fetch and sync dotfiles by yadm
+- pour Homebrew
+- install yadm, fetch and sync dotfiles
 - bootstrap to do some preference customs by yadm
+- install other brew (casks/mas) packages
 
 ## To-do
 
