@@ -9,7 +9,3 @@
 	signingkey = 3078FC48CAFF1832
 [commit]
 	gpgsign = true
-[http]
-	proxy = socks5://127.0.0.1:7890
-[https]
-	proxy = socks5://127.0.0.1:7890
