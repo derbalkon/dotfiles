@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 set -e
 system_type=$(uname -s)
 cd $HOME

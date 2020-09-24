@@ -13,8 +13,8 @@ Proxy, proxy, proxy. Stay cool and stay [clashy](https://install.appcenter.ms/us
 
 ### One-liner
 
-```sh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/derbalkon/dotfiles/master/.config/yadm/setup.sh)"
+```zsh
+/bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/derbalkon/dotfiles/master/.config/yadm/setup.zsh)"
 ```
 
 This will
