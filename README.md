@@ -1,7 +1,7 @@
 # Dotfiles
 
-![](https://img.shields.io/badge/OS-macOS-9cf)
-![](https://img.shields.io/badge/It%20Works-For%20Me™-green)
+![OS-Type](https://img.shields.io/badge/OS-macOS-9cf)
+![ItWorksForMe](https://img.shields.io/badge/It%20Works-For%20Me™-green)
 
 > Just a backup of my dumb and boring dotfiles using [yadm](https://github.com/TheLocehiliosan/yadm).
 

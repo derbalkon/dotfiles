@@ -16,6 +16,7 @@ brew "mas"
 
 cask "font-fira-code"
 cask "font-ubuntu"
+cask "font-jetbrains-mono"
 cask "iina"
 cask "karabiner-elements"
 cask "monitorcontrol"
