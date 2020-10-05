@@ -13,6 +13,7 @@ brew "node"
 brew "udunits"
 brew "hugo"
 brew "mas"
+brew "romkatv/powerlevel10k/powerlevel10k"
 
 cask "font-fira-code"
 cask "font-ubuntu"
