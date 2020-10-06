@@ -1,6 +1,8 @@
 #!/bin/zsh
 set -e
 cd $HOME
+system_type=$(uname -s)
+computer_name=$(scutil --get ComputerName)
 
 brew_bundle(){
   if [ -f "$HOME/.Brewfile" ]; then
@@ -31,12 +33,8 @@ macos_customize(){
   defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
   # Disable automatic period substitution
   defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
-
-  # Energy saving
-  sudo pmset -a hibernatemode 0
-  sudo pmset -a displaysleep 45
-  sudo pmset -a sleep 45
-  sudo pmset -a proximitywake 0
+  # Set menubar digital clock format
+  defaults write com.apple.menuextra.clock DateFormat -string "EEE HH:mm"
 
   # Dock
   # Enable highlight hover effect for the grid view of a stack
@@ -45,9 +43,6 @@ macos_customize(){
   defaults write com.apple.dock orientation -string left
   # Enable the magic zoom animation
   defaults write com.apple.dock magnification -bool true
-  # Set the icon size of Dock items
-  defaults write com.apple.dock tilesize -int 64
-  defaults write com.apple.dock largesize -int 73
   # Minimize windows into application’s icon
   defaults write com.apple.dock minimize-to-application -bool true
 
@@ -73,13 +68,62 @@ macos_customize(){
   defaults write com.apple.finder WarnOnEmptyTrash -bool false
   # Show item info to the right of the icons on the desktop
   /usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" ~/Library/Preferences/com.apple.finder.plist
+}
 
+macos_customize_desktop(){
+  # Energy saving
+  sudo pmset -a hibernatemode 0
+  sudo pmset -a displaysleep 45
+  sudo pmset -a sleep 45
+  sudo pmset -a proximitywake 0
+
+  # Dock
+  # Set the icon size of Dock items
+  defaults write com.apple.dock tilesize -int 64
+  defaults write com.apple.dock largesize -int 73
+}
+
+macos_customize_laptop(){
+  # Trackpad
+  # Enable tap to click
+  defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+  # Enable two finger right click
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+  # Use four finger gesture
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerHorizSwipeGesture -int 2
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadFourFingerVertSwipeGesture -int 2
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerHorizSwipeGesture -int 0
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerVertSwipeGesture -int 0
+  # Enable three finger dragging
+  defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+  
+  # Dock
+  # Enable secret "suck" minimize effect for less frame dropping
+  defaults write com.apple.dock mineffect -string suck
+  # Set the icon size of Dock items
+  defaults write com.apple.dock tilesize -int 52
+  defaults write com.apple.dock largesize -int 68
+  # Disable show recents
+  defaults write com.apple.dock show-recents -bool false
+}
+
+wrap_up(){
   echo ">>> Reloading..."
+  killall SystemUIServer
   killall Dock
   killall Finder
 }
 
-brew_bundle
-macos_customize
+if [ "$system_type" = "Darwin" ]; then
+  brew_bundle
+  macos_customize
+  if [ "$computer_name" = "Almond" ]; then
+    macos_customize_desktop
+  fi
+  if [ "$computer_name" = "Brownie" ]; then
+    macos_customize_laptop
+  fi
+  wrap_up
+fi
 
-echo "Done."
+echo "Done. Some of these changes require a logout/restart to take effect."
