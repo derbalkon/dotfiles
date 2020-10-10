@@ -18,7 +18,6 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 cask "font-fira-code"
-cask "font-ubuntu"
 cask "font-jetbrains-mono"
 cask "iina"
 cask "karabiner-elements"
