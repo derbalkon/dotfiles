@@ -117,7 +117,7 @@ wrap_up(){
 if [ "$system_type" = "Darwin" ]; then
   brew_bundle
   macos_customize
-  if [ "$computer_name" = "Almond" ]; then
+  if [ "$computer_name" = "derbalkonRio" ]; then
     macos_customize_desktop
   fi
   if [ "$computer_name" = "Brownie" ]; then
