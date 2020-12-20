@@ -9,3 +9,5 @@
 	signingkey = 3078FC48CAFF1832
 [commit]
 	gpgsign = true
+[gpg]
+	program = /usr/local/bin/gpg
