@@ -11,3 +11,5 @@
 	gpgsign = true
 [gpg]
 	program = /usr/local/bin/gpg
+[http]
+	proxy = http://127.0.0.1:7890
