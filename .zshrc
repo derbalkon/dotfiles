@@ -13,6 +13,13 @@ export CLICOLOR=1
 # Set network environment
 export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890
 
+# Set custom R library to avoid missing libPath after `brew update`
+if [ -n $R_LIBS ]; then
+   export R_LIBS=/usr/local/share/rlibs:$R_LIBS
+else
+   export R_LIBS=/usr/local/share/rlibs
+fi
+
 # Auto suggestions
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
