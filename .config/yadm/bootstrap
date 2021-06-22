@@ -1,27 +1,58 @@
 #!/bin/zsh
-set -e
 cd $HOME
 system_type=$(uname -s)
-computer_name=$(scutil --get ComputerName)
+device_name=$(scutil --get ComputerName)
+grey=$(tput setaf 8)
+red=$(tput setaf 9)
+green=$(tput setaf 10)
+yellow=$(tput setaf 11)
+reset=$(tput sgr0)
 
-brew_bundle(){
-  if [ -f "$HOME/.Brewfile" ]; then
-    echo ">>> Installing brew packages..."
-    brew bundle --global
+function log_info() {
+  echo "${grey}[$(date '+%Y-%m-%d %H:%M:%S')]${reset} ${green}INFO${reset} $1"
+}
+function log_warn() {
+  echo "${grey}[$(date '+%Y-%m-%d %H:%M:%S')]${reset} ${yellow}WARN${reset} $1"
+}
+function log_error() {
+  echo "${grey}[$(date '+%Y-%m-%d %H:%M:%S')]${reset} ${red}ERROR${reset} $1"
+}
+
+function passport() {
+  if [ "$system_type" != "Darwin" ]; then
+    log_error "Wrong device. Aborting..."
+    exit 1
   fi
 }
 
-macos_customize(){
+function brew_bundle() {
+  if [ -f "$HOME/.Brewfile" ]; then
+    log_info "Installing brew packages..."
+    brew bundle --global --quiet
+  else
+    log_error "Brewfile not exists. Aborting..."
+    exit 1
+  fi
+}
+
+function rlib_environment() {
+  if [ ! -d "/usr/local/share/rlibs/" ]; then
+    log_info "Creating customized R library directory..."
+    mkdir /usr/local/share/rlibs/
+  else
+    log_warn "Customized R library directory exits. Ignoring..."
+  fi
+}
+
+function macos_customize() {
   # Refer to ~/.macos — https://mths.be/macos
-  echo ">>> Fitting some customized changes..."
+  log_info "Fitting some customized changes..."
 
   # Close any open System Preferences panes, to prevent them from overriding
   osascript -e 'tell application "System Preferences" to quit'
 
   # Ask for the administrator password upfront
   sudo -v
-  # Keep-alive: update existing `sudo` time stamp until job finished
-  while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
   # General
   # Always show scrollbars
@@ -70,7 +101,7 @@ macos_customize(){
   /usr/libexec/PlistBuddy -c "Set DesktopViewSettings:IconViewSettings:labelOnBottom false" ~/Library/Preferences/com.apple.finder.plist
 }
 
-macos_customize_desktop(){
+function macos_customize_desktop() {
   # Energy saving
   sudo pmset -a sleep 45
   sudo pmset -a displaysleep 45
@@ -83,7 +114,7 @@ macos_customize_desktop(){
   defaults write com.apple.dock largesize -int 73
 }
 
-macos_customize_laptop(){
+function macos_customize_laptop() {
   # Trackpad
   # Enable tap to click
   defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
@@ -107,23 +138,27 @@ macos_customize_laptop(){
   defaults write com.apple.dock show-recents -bool false
 }
 
-wrap_up(){
-  echo ">>> Reloading..."
+function wrap_up() {
+  log_info "Reloading..."
   killall SystemUIServer
   killall Dock
   killall Finder
 }
 
-if [ "$system_type" = "Darwin" ]; then
-  brew_bundle
-  macos_customize
-  if [ "$computer_name" = "derbalkonRio" ]; then
-    macos_customize_desktop
-  fi
-  if [ "$computer_name" = "Brownie" ]; then
-    macos_customize_laptop
-  fi
-  wrap_up
-fi
 
-echo "Done. Some of these changes require a logout/restart to take effect."
+passport
+brew_bundle
+rlib_environment
+macos_customize
+if [ "$device_name" = "derbalkonRio" ]; then
+  macos_customize_desktop
+else
+  if [ "$device_name" = "derbalkon" ]; then
+    macos_customize_laptop
+  else
+    log_warn "Hmmm... Looks like an unfamiliar Mac."
+  fi
+fi
+wrap_up
+
+log_info "Done. Some of these changes require a logout/restart to take effect."
