@@ -16,11 +16,12 @@ export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_pr
 # Set custom R library to avoid missing libPath after `brew update`
 if [ ! -d "/usr/local/share/rlibs/" ]; then
   mkdir /usr/local/share/rlibs/
-fi
-if [ -n $R_LIBS ]; then
-   export R_LIBS=/usr/local/share/rlibs:$R_LIBS
 else
-   export R_LIBS=/usr/local/share/rlibs
+   if [ -n $R_LIBS ]; then
+      export R_LIBS=/usr/local/share/rlibs:$R_LIBS
+   else
+      export R_LIBS=/usr/local/share/rlibs
+   fi
 fi
 
 # Auto suggestions
