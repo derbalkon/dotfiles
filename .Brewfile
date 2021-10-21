@@ -28,18 +28,15 @@ cask "appcleaner"
 cask "cyberduck"
 cask "font-fira-code"
 cask "font-jetbrains-mono"
-cask "hackintool"
 cask "iina"
 cask "karabiner-elements"
 cask "keka"
 cask "mailtrackerblocker"
 cask "microsoft-edge"
-cask "monitorcontrol"
 cask "qlmarkdown"
 cask "switchkey"
 cask "thunder"
 cask "visual-studio-code"
-cask "xquartz"
 cask "zotero"
 
 mas "CleanMyDrive 2", id: 523620159
@@ -49,7 +46,6 @@ mas "Microsoft PowerPoint", id: 462062816
 mas "Microsoft Word", id: 462054704
 mas "OneDrive", id: 823766827
 mas "QQ", id: 451108668
-mas "QQ音乐", id: 595615424
 mas "Telegram", id: 747648890
 mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944

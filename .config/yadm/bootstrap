@@ -153,7 +153,7 @@ macos_customize
 if [ "$device_name" = "derbalkonRio" ]; then
   macos_customize_desktop
 else
-  if [ "$device_name" = "derbalkon" ]; then
+  if [ "$device_name" = "derbalkonAle" ]; then
     macos_customize_laptop
   else
     log_warn "Hmmm... Looks like an unfamiliar Mac."
