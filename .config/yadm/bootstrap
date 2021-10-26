@@ -78,8 +78,6 @@ function macos_customize() {
   defaults write com.apple.dock minimize-to-application -bool true
 
   # Finder
-  # allow quitting via ⌘ + Q; doing so will also hide desktop icons
-  defaults write com.apple.finder QuitMenuItem -bool true
   # set Downloads as the default location for new Finder windows
   defaults write com.apple.finder NewWindowTarget -string "PfLo"
   defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Downloads/"
